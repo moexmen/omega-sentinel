@@ -1,1 +1,6 @@
-["ruby.coffee", "rubygems.coffee", "ruby_rules.coffee", "grumpycat.coffee"]
+[
+  "ruby.coffee",
+  "rubygems.coffee",
+  "ruby_rules.coffee",
+  "grumpycat.coffee",
+  "gorbypuff.coffee"]
