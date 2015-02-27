@@ -3,6 +3,5 @@
   "rubygems.coffee",
   "ruby_rules.coffee",
   "grumpycat.coffee",
-  "gorbypuff.coffee",
-  "clojure.coffee"
+  "gorbypuff.coffee"
 ]
