@@ -7,6 +7,7 @@
   "dependencies": {
     "hubot": "^2.11.1",
     "hubot-business-cat": "^1.1.15",
+    "hubot-darts": "^1.0.1",
     "hubot-diagnostics": "0.0.1",
     "hubot-fliptable": ">= 0.0.0",
     "hubot-google-images": "^0.1.3",
