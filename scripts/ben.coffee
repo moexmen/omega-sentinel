@@ -23,4 +23,4 @@ randomQuote = ->
 
 module.exports = (robot) ->
   robot.respond /(quote )?ben/i, (msg) ->
-    msg.reply randomQuote
+    msg.reply randomQuote()
