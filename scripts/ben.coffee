@@ -3,8 +3,8 @@
 #
 #
 # Commands:
-#   #{robot.name} quote ben
-#   #{robot.name} ben
+#   quote ben
+#   ben
 #
 #
 
@@ -15,7 +15,10 @@ quotes = [
   "Eugene will plunk his server and woohoo! Settle already!",
   "Time out. Time out. Time out.",
   "Can we have someone to look into this? (awkward silence)",
-  "Want to be DD Ops? Can rub shoulders with Yoke Chun. :stuck_out_tongue:"
+  "Want to be DD Ops? Can rub shoulders with Yoke Chun. :stuck_out_tongue:",
+  "This is good, all to read and internalize.",
+  "Would you like to give a talk on the book? :-) ",
+  "Calling API is not sufficient for ESTL."
 ]
 
 randomQuote = ->
