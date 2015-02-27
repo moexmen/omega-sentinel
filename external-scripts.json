@@ -11,5 +11,6 @@
   "hubot-shipit",
   "hubot-youtube",
   "hubot-fliptable",
-  "hubot-business-cat"
+  "hubot-business-cat",
+  "hubot-standup-alarm"
 ]
