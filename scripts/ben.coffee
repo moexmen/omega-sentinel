@@ -30,5 +30,5 @@ quotes = [
 ]
 
 module.exports = (robot) ->
-  robot.respond /(quote )?ben/i, (msg) ->
+  robot.hear /ben/i, (msg) ->
     msg.reply "#{emojis.ben} #{msg.random quotes}"
