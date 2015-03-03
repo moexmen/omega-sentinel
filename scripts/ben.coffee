@@ -18,7 +18,9 @@ quotes = [
   "Want to be DD Ops? Can rub shoulders with Yoke Chun. :stuck_out_tongue:",
   "This is good, all to read and internalize.",
   "Would you like to give a talk on the book? :-) ",
-  "Calling API is not sufficient for ESTL."
+  "Calling API is not sufficient for ESTL.",
+  "Principle of leadership: When things screw up, you take",
+  "I need a deputy to take one for me (Weiqing looks around)"
 ]
 
 randomQuote = ->
