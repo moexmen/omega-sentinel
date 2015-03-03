@@ -8,6 +8,10 @@
 #
 #
 
+emojis =
+  ben: ":ben:",
+  weiqing: ":twq:"
+
 quotes = [
   "Want my job?",
   "Sai understand?",
@@ -20,13 +24,10 @@ quotes = [
   "Would you like to give a talk on the book? :-) ",
   "Calling API is not sufficient for ESTL.",
   "Principle of leadership: When things screw up, you take",
-  "I need a deputy to take one for me (Weiqing looks around)",
+  "I need a deputy to take one for me (#{emojis.weiqing} looks around)",
   "好不好?"
 ]
 
-randomQuote = ->
-  quotes[Math.floor(Math.random() * quotes.length)]
-
 module.exports = (robot) ->
   robot.respond /(quote )?ben/i, (msg) ->
-    msg.reply randomQuote()
+    msg.reply "#{emojis.ben} #{msg.random quotes}"
