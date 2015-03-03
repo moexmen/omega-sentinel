@@ -1,3 +1,4 @@
+sudo: false
 deploy:
   provider: heroku
   api_key:
