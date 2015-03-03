@@ -25,7 +25,8 @@ quotes = [
   "Calling API is not sufficient for ESTL.",
   "Principle of leadership: When things screw up, you take",
   "I need a deputy to take one for me (#{emojis.weiqing} looks around)",
-  "好不好?"
+  "好不好?",
+  "修身齐家治国平天下。"
 ]
 
 module.exports = (robot) ->
