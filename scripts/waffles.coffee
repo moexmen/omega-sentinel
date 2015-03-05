@@ -59,7 +59,7 @@ module.exports = (robot) ->
     robot.brain.set 'waffleTime', date
     robot.brain.set(waffleType, []) for waffleType in waffleTypes
 
-  robot.hear /(chocolate|cheese|kaya|peanut|blueberry|plain)/i, (msg) ->
+  robot.hear /^(chocolate|cheese|kaya|peanut|blueberry|plain)$/i, (msg) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
       nameList = robot.brain.get(waffleType)
