@@ -38,7 +38,7 @@ module.exports = (robot) ->
 
   robot.hear /(chocolate|cheese|kaya|peanut|blueberry|plain)/i, (msg) ->
     if isOrderActive()
-      waffleType = msg.match[1]
+      waffleType = msg.match[1].toLowerCase()
       numType = robot.brain.get(waffleType)
       numType += 1
       robot.brain.set waffleType, numType
