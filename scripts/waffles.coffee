@@ -13,7 +13,7 @@ module.exports = (robot) ->
   timeoutId = null
 
   # produces a summary of current orders
-  getOrders = () ->
+  summaries = () ->
     output = 'Orders so far:\n'
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
@@ -73,12 +73,12 @@ module.exports = (robot) ->
         timeoutId = null
 
       timeoutId = setTimeout () ->
-          msg.reply getOrders()
+          msg.reply summaries()
         , 5 * 1000
 
-  robot.hear /(consolidate|orders)/i, (msg) ->
+  robot.hear /(summaries|consolidate|orders)/i, (msg) ->
     if isOrderActive()
-      msg.reply getOrders()
+      msg.reply summaries()
       # cancel the scheduled summary display if there's one
       if timeoutId?
         clearTimeout(timeoutId)
