@@ -48,7 +48,7 @@ module.exports = (robot) ->
       false
 
   # listen out for waffles? to start consolidating
-  robot.hear /^waffles\?$/i, (msg) ->
+  robot.hear /waffles\?/i, (msg) ->
     msg.reply "Consolidating waffle orders...\n#{getAvailableFlavours()}"
     date = new Date()
     # start a new order by setting the current time and setting the order keys to empty arrays
