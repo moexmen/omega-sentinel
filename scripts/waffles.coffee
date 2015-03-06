@@ -10,17 +10,14 @@
 waffleTypes = ['chocolate', 'cheese', 'kaya', 'peanut', 'blueberry', 'plain']
 
 module.exports = (robot) ->
-  timeoutId = null
-
   # produces a summary of current orders
-  getOrders = () ->
+  summaries = () ->
     output = 'Orders so far:\n'
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
       numType = nameList.length
       names = getNames nameList
       output += "#{waffleType}: #{numType} #{names}\n" if numType != 0
-    timeoutId = null
     output
 
   # produces a nice comma separated string of names surrounded by parantheses
@@ -65,21 +62,8 @@ module.exports = (robot) ->
       nameList = robot.brain.get(waffleType)
       nameList.push(msg.message.user.name)
       robot.brain.set waffleType, nameList
-      msg.reply "#{waffleType} order received!"
+      msg.reply "#{summaries()}"
 
-      # if timeoutId is not null (existing timeout), clear it
-      if timeoutId?
-        clearTimeout(timeoutId)
-        timeoutId = null
-
-      timeoutId = setTimeout () ->
-          msg.reply getOrders()
-        , 5 * 1000
-
-  robot.hear /(consolidate|orders)/i, (msg) ->
+  robot.hear /(summaries|consolidate|orders)/i, (msg) ->
     if isOrderActive()
-      msg.reply getOrders()
-      # cancel the scheduled summary display if there's one
-      if timeoutId?
-        clearTimeout(timeoutId)
-        timeoutId = null
+      msg.reply summaries()
