@@ -10,7 +10,8 @@
 
 emojis =
   ben: ":ben:",
-  weiqing: ":twq:"
+  weiqing: ":twq:",
+  eugene: ":eug:"
 
 quotes = [
   "Want my job?",
@@ -26,7 +27,8 @@ quotes = [
   "Principle of leadership: When things screw up, you take",
   "I need a deputy to take one for me (#{emojis.weiqing} looks around)",
   "好不好?",
-  "修身齐家治国平天下。"
+  "修身齐家治国平天下。",
+  "Commando #{emojis.eugene} must go in there and plant flag!! (bang table)"
 ]
 
 module.exports = (robot) ->
