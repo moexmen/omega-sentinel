@@ -28,7 +28,8 @@ quotes = [
   "I need a deputy to take one for me (#{emojis.weiqing} looks around)",
   "好不好?",
   "修身齐家治国平天下。",
-  "Commando #{emojis.eugene} must go in there and plant flag!! (bang table)"
+  "Commando #{emojis.eugene} must go in there and plant flag!! (bang table)",
+  "Our lives are like shit. This is something we have to embrace!"
 ]
 
 module.exports = (robot) ->
