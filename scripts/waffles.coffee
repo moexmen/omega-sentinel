@@ -62,8 +62,32 @@ module.exports = (robot) ->
       nameList = robot.brain.get(waffleType)
       nameList.push(msg.message.user.name)
       robot.brain.set waffleType, nameList
+
+      # create undo list for each user, keyed by username
+      waffleList = robot.brain.get(msg.message.user.name)
+      waffleList ?= []
+      waffleList.push(waffleType)
+      robot.brain.set msg.message.user.name, waffleList
+
       msg.reply "#{summaries()}"
 
   robot.hear /(summaries|consolidate|orders)/i, (msg) ->
     if isOrderActive()
       msg.reply summaries()
+
+  robot.hear /undo/i, (msg) ->
+    if isOrderActive()
+      # pop waffle order for the user
+      username = msg.message.user.name
+      waffleList = robot.brain.get(username)
+      lastWaffle = waffleList.pop()
+      robot.brain.set username, waffleList
+
+      # remove a single instance of the username for that waffle type
+      nameList = robot.brain.get(lastWaffle)
+      nameList.splice(nameList.indexOf(username), 1)
+      # cannot use filter as more than 1 element will be removed
+      # nameList = nameList.filter (name) -> name isnt username
+      robot.brain.set lastWaffle, nameList
+
+      msg.reply "#{summaries()}"
