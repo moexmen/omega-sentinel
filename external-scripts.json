@@ -13,5 +13,6 @@
   "hubot-fliptable",
   "hubot-business-cat",
   "hubot-standup-alarm",
-  "hubot-darts"
+  "hubot-darts",
+  "hubot-spot"
 ]
