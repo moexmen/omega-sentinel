@@ -55,6 +55,8 @@ module.exports = (robot) ->
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
     robot.brain.set(waffleType, []) for waffleType in waffleTypes
+    { spawn } = require 'child_process'
+    s = spawn '/usr/bin/say', ['Calling for waffle orders']
 
   robot.hear /(chocolate|cheese|kaya|peanut|blueberry|plain)/i, (msg) ->
     if isOrderActive()
