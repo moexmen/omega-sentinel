@@ -8,6 +8,13 @@
 #
 
 waffleTypes = ['chocolate', 'cheese', 'kaya', 'peanut', 'blueberry', 'plain']
+URL = process.env.HUBOT_SPOT_URL || "http://localhost:5051"
+
+# Send a request to spot
+spotRequest = (message, path, action, options, callback) ->
+  message.http("#{URL}#{path}")
+    .query(options)[action]() (err, res, body) ->
+      callback(err,res,body)
 
 module.exports = (robot) ->
   # produces a summary of current orders
@@ -55,6 +62,9 @@ module.exports = (robot) ->
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
     robot.brain.set(waffleType, []) for waffleType in waffleTypes
+    params = {what: 'Taking waffle orders'}
+    spotRequest msg, '/say', 'put', params, (err, res, body) ->
+      null
 
   robot.hear /(chocolate|cheese|kaya|peanut|blueberry|plain)/i, (msg) ->
     if isOrderActive()
