@@ -30,7 +30,8 @@ quotes = [
   "修身齐家治国平天下。",
   "Commando #{emojis.eugene} must go in there and plant flag!! (bang table)",
   "Our lives are like shit. This is something we have to embrace!",
-  "Hard is the norm, impossible is the standard!"
+  "Hard is the norm, impossible is the standard!",
+  "Hari-kiri is in fashion nowadays"
 ]
 
 module.exports = (robot) ->
