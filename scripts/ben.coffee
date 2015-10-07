@@ -36,5 +36,5 @@ quotes = [
 
 module.exports = (robot) ->
   robot.hear /ben\b/i, (msg) ->
-    if Math.random() < 0.1
+    if Math.random() < 0.3
       msg.reply "#{emojis.ben} #{msg.random quotes}"
