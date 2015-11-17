@@ -31,7 +31,8 @@ quotes = [
   "Commando #{emojis.eugene} must go in there and plant flag!! (bang table)",
   "Our lives are like shit. This is something we have to embrace!",
   "Hard is the norm, impossible is the standard!",
-  "Hari-kiri is in fashion nowadays"
+  "Hari-kiri is in fashion nowadays.",
+  "There is theory and there is practice."
 ]
 
 module.exports = (robot) ->
