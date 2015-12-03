@@ -7,7 +7,7 @@
 #   <flavour> - when active, typing a flavour adds it to the order
 #
 
-waffleTypes = ['chocolate', 'cheese', 'kaya', 'peanut', 'blueberry', 'plain']
+waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
 URL = process.env.HUBOT_SPOT_URL || "http://localhost:5051"
 
 # Send a request to spot
@@ -66,7 +66,7 @@ module.exports = (robot) ->
     spotRequest msg, '/say', 'put', params, (err, res, body) ->
       null
 
-  robot.hear /(chocolate|cheese|kaya|peanut|blueberry|plain)/i, (msg) ->
+  robot.hear /(plain|kaya|butter|peanut|redbean|chocolate|blueberry|cheese)/i, (msg) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
       nameList = robot.brain.get(waffleType)
