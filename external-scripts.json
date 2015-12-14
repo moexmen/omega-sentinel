@@ -1,18 +1,15 @@
 [
+  "hubot-business-cat",
+  "hubot-darts",
   "hubot-diagnostics",
-  "hubot-help",
-  "hubot-heroku-keepalive",
+  "hubot-fliptable",
   "hubot-google-images",
   "hubot-google-translate",
+  "hubot-help",
   "hubot-pugme",
-  "hubot-maps",
   "hubot-redis-brain",
   "hubot-rules",
   "hubot-shipit",
-  "hubot-youtube",
-  "hubot-fliptable",
-  "hubot-business-cat",
-  "hubot-standup-alarm",
-  "hubot-darts",
-  "hubot-spot"
+  "hubot-spot",
+  "hubot-standup-alarm"
 ]
