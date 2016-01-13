@@ -33,7 +33,8 @@ quotes = [
   "Hard is the norm, impossible is the standard!",
   "Hari-kiri is in fashion nowadays.",
   "There is theory and there is practice.",
-  "I'm quite stunned that you all are quite stunned by this thing."
+  "I'm quite stunned that you all are quite stunned by this thing.",
+  "Before you're married, you're single."
 ]
 
 module.exports = (robot) ->
