@@ -5,7 +5,7 @@
 # No commands.
 #
 
-URL = process.env.HUBOT_HISTORIAN_URL || "http://192.168.99.100:56400"
+URL = process.env.HUBOT_HISTORIAN_URL || "http://mini2.xmen:56400"
 
 module.exports = (robot) ->
   robot.hear /.*/i, (msg) ->
