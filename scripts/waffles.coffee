@@ -66,7 +66,7 @@ module.exports = (robot) ->
     spotRequest msg, '/say', 'put', params, (err, res, body) ->
       null
 
-  robot.hear /(plain|kaya|butter|peanut|redbean|chocolate|blueberry|cheese)/i, (msg) ->
+  robot.hear /^(plain|kaya|butter|peanut|redbean|chocolate|blueberry|cheese)$/i, (msg) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
       nameList = robot.brain.get(waffleType)
