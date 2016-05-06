@@ -20,7 +20,6 @@ quotes = [
   "Eugene will plunk his server and woohoo! Settle already!",
   "Time out. Time out. Time out.",
   "Can we have someone to look into this? (awkward silence)",
-  "Want to be DD Ops? Can rub shoulders with Yoke Chun. :stuck_out_tongue:",
   "This is good, all to read and internalize.",
   "Would you like to give a talk on the book? :-) ",
   "Calling API is not sufficient for ESTL.",
@@ -34,7 +33,8 @@ quotes = [
   "Hari-kiri is in fashion nowadays.",
   "There is theory and there is practice.",
   "I'm quite stunned that you all are quite stunned by this thing.",
-  "Before you're married, you're single."
+  "Before you're married, you're single.",
+  "I can do it in my sleep!"
 ]
 
 module.exports = (robot) ->
