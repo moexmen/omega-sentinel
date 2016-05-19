@@ -26,7 +26,7 @@ module.exports = (robot) ->
       nameList = robot.brain.get(waffleType)
       numType = nameList.length
       names = "(#{nameList.join(', ')})"
-      output += "#{waffleType}: #{numType} #{names}\n" if numType != 0
+      output += "*#{waffleType}*: #{numType} #{names}\n" if numType != 0
     output
 
 
@@ -56,8 +56,8 @@ module.exports = (robot) ->
 
   # listen out for waffles? to start consolidating
   robot.hear /waffles\?/i, (msg) ->
-    msg.reply "Consolidating waffle orders...\n" +
-      "Available flavours: #{waffleTypes.join(', ')}"
+    msg.send "@here: Consolidating waffle orders...\n" +
+      "*Available flavours*: #{waffleTypes.join(', ')}"
     date = new Date()
     # start a new order by setting the current time and setting the order keys to empty arrays
     # the array will store the list of user names
@@ -77,7 +77,7 @@ module.exports = (robot) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
       recipientName = msg.match[2]
-      addOrder(waffleType, "#{recipientName} via #{msg.message.user.name}")
+      addOrder(waffleType, "#{recipientName} _via #{msg.message.user.name}_")
       msg.reply summaries()
 
   robot.hear /^cancel$/i, (msg) ->
