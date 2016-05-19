@@ -5,6 +5,7 @@
 # Commands:
 #   waffles? - start listening for and consolidating waffle orders
 #   <flavour> - when active, typing a flavour adds it to the order
+#   <flavour> for <name> - when active, adds someone else's flavour to the order for them
 #
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
@@ -62,6 +63,13 @@ module.exports = (robot) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
       addOrder(waffleType, msg.message.user.name)
+      msg.reply summaries()
+
+  robot.hear new RegExp("^(#{waffleTypes.join('|')}) for (.*)$", 'i'), (msg) ->
+    if isOrderActive()
+      waffleType = msg.match[1].toLowerCase()
+      recipientName = msg.match[2]
+      addOrder(waffleType, "#{recipientName} via #{msg.message.user.name}")
       msg.reply summaries()
 
   robot.hear /(summaries|consolidate|orders)/i, (msg) ->
