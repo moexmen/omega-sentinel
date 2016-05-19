@@ -58,7 +58,7 @@ module.exports = (robot) ->
     spotRequest msg, '/say', 'put', params, (err, res, body) ->
       null
 
-  robot.hear new RegExp("(#{waffleTypes.join('|')})", 'i'), (msg) ->
+  robot.hear new RegExp("^(#{waffleTypes.join('|')})$", 'i'), (msg) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
       addOrder(waffleType, msg.message.user.name)
