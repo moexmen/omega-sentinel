@@ -82,20 +82,22 @@ module.exports = (robot) ->
       addOrder(waffleType, "#{recipientName} _via #{msg.message.user.name}_")
       msg.reply summaries()
 
-  robot.hear /^cancel$/i, (msg) ->
+  robot.hear /^waffles cancel$/i, (msg) ->
     if isOrderActive()
       deleteOrders(msg.message.user.name)
       msg.reply summaries()
 
-  robot.hear /^waffles help/i, (msg) ->
+  robot.hear /^waffles help$/i, (msg) ->
     if isOrderActive()
-      msg.reply "\n*To order*: say `<flavour>`\n" +
-        "*To order for someone else*: say `<flavour> for <name>`\n" +
-        "*To cancel all your orders*: say `cancel`"
+      msg.reply "\n*Add an order*: `<flavour>`\n" +
+        "*Add an order for someone else*: `<flavour> for <name>`\n" +
+        "*Cancel all your orders*: `waffles cancel`\n" +
+        "*List current orders*: `waffles orders`\n" +
+        "*Stop collecting orders*: `waffles stop`"
     else
       msg.reply "\n*To start collecting orders*: say `waffles?`"
 
-  robot.hear /(summaries|consolidate|orders)/i, (msg) ->
+  robot.hear /^waffles orders$/i, (msg) ->
     if isOrderActive()
       msg.reply summaries()
 
