@@ -11,6 +11,7 @@
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
 URL = process.env.HUBOT_SPOT_URL || "http://localhost:5051"
+TIMEOUT = 15 * 60 * 1000
 
 # Send a request to spot
 spotRequest = (message, path, action, options, callback) ->
@@ -46,10 +47,10 @@ module.exports = (robot) ->
   # false otherwise
   isOrderActive = () ->
     waffleTime = robot.brain.get('waffleTime')
-    now = new Date()
+    now = Date.now()
 
     # if it's within 15 minutes
-    if (now - 15 * 60 * 1000) < waffleTime
+    if (now - TIMEOUT) < waffleTime
       true
     else
       false
@@ -59,7 +60,7 @@ module.exports = (robot) ->
     msg.send "@here: Consolidating waffle orders...\n" +
       "*Available flavours*: #{waffleTypes.join(', ')}\n" +
       "*Need help?* say `waffles help`"
-    date = new Date()
+    date = Date.now()
     # start a new order by setting the current time and setting the order keys to empty arrays
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
@@ -97,3 +98,9 @@ module.exports = (robot) ->
   robot.hear /(summaries|consolidate|orders)/i, (msg) ->
     if isOrderActive()
       msg.reply summaries()
+
+  robot.hear /^waffles stop$/i, (msg) ->
+    if isOrderActive()
+      robot.brain.set('waffleTime', Date.now() - TIMEOUT)
+      msg.reply '*No more orders!* ' + summaries()
+
