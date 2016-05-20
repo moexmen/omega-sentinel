@@ -11,6 +11,7 @@
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
 URL = process.env.HUBOT_SPOT_URL || "http://localhost:5051"
+TIMEOUT = 15 * 60 * 1000
 
 # Send a request to spot
 spotRequest = (message, path, action, options, callback) ->
@@ -39,17 +40,17 @@ module.exports = (robot) ->
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
         .filter (order_name) ->
-          order_name != name and not order_name.endsWith " via #{name}"
+          order_name != name and not order_name.endsWith " _via #{name}_"
       robot.brain.set waffleType, nameList
 
   # returns true if the waffles? command was issued within the last 15 minutes
   # false otherwise
   isOrderActive = () ->
     waffleTime = robot.brain.get('waffleTime')
-    now = new Date()
+    now = Date.now()
 
     # if it's within 15 minutes
-    if (now - 15 * 60 * 1000) < waffleTime
+    if (now - TIMEOUT) < waffleTime
       true
     else
       false
@@ -59,7 +60,7 @@ module.exports = (robot) ->
     msg.send "@here: Consolidating waffle orders...\n" +
       "*Available flavours*: #{waffleTypes.join(', ')}\n" +
       "*Need help?* say `waffles help`"
-    date = new Date()
+    date = Date.now()
     # start a new order by setting the current time and setting the order keys to empty arrays
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
@@ -81,19 +82,27 @@ module.exports = (robot) ->
       addOrder(waffleType, "#{recipientName} _via #{msg.message.user.name}_")
       msg.reply summaries()
 
-  robot.hear /^cancel$/i, (msg) ->
+  robot.hear /^waffles cancel$/i, (msg) ->
     if isOrderActive()
       deleteOrders(msg.message.user.name)
       msg.reply summaries()
 
-  robot.hear /^waffles help/i, (msg) ->
+  robot.hear /^waffles help$/i, (msg) ->
     if isOrderActive()
-      msg.reply "\n*To order*: say `<flavour>`\n" +
-        "*To order for someone else*: say `<flavour> for <name>`\n" +
-        "*To cancel all your orders*: say `cancel`"
+      msg.reply "\n*Add an order*: `<flavour>`\n" +
+        "*Add an order for someone else*: `<flavour> for <name>`\n" +
+        "*Cancel all your orders*: `waffles cancel`\n" +
+        "*List current orders*: `waffles orders`\n" +
+        "*Stop collecting orders*: `waffles stop`"
     else
       msg.reply "\n*To start collecting orders*: say `waffles?`"
 
-  robot.hear /(summaries|consolidate|orders)/i, (msg) ->
+  robot.hear /^waffles orders$/i, (msg) ->
     if isOrderActive()
       msg.reply summaries()
+
+  robot.hear /^waffles stop$/i, (msg) ->
+    if isOrderActive()
+      robot.brain.set('waffleTime', Date.now() - TIMEOUT)
+      msg.reply '*No more orders!* ' + summaries()
+
