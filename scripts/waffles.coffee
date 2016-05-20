@@ -5,6 +5,8 @@
 # Commands:
 #   waffles? - start listening for and consolidating waffle orders
 #   <flavour> - when active, typing a flavour adds it to the order
+#   <flavour> for <name> - when active, adds someone else's flavour to the order for them
+#   cancel - when active, cancels all of your orders
 #
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
@@ -23,24 +25,22 @@ module.exports = (robot) ->
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
       numType = nameList.length
-      names = getNames nameList
-      output += "#{waffleType}: #{numType} #{names}\n" if numType != 0
+      names = "(#{nameList.join(', ')})"
+      output += "*#{waffleType}*: #{numType} #{names}\n" if numType != 0
     output
 
-  # produces a nice comma separated string of names surrounded by parantheses
-  getNames = (nameList) ->
-    names = '('
-    for name in nameList
-      names += "#{name}, "
-    names = names[0..-3]
-    names += ')'
 
-  # produces a nice string of available flavours
-  getAvailableFlavours = () ->
-    available = 'Available flavours are '
+  addOrder = (waffleType, name) ->
+    nameList = robot.brain.get(waffleType)
+    nameList.push(name)
+    robot.brain.set(waffleType, nameList)
+
+  deleteOrders = (name) ->
     for waffleType in waffleTypes
-      available += "#{waffleType}, "
-    available[0..-3]
+      nameList = robot.brain.get(waffleType)
+        .filter (order_name) ->
+          order_name != name and not order_name.endsWith " via #{name}"
+      robot.brain.set waffleType, nameList
 
   # returns true if the waffles? command was issued within the last 15 minutes
   # false otherwise
@@ -56,7 +56,9 @@ module.exports = (robot) ->
 
   # listen out for waffles? to start consolidating
   robot.hear /waffles\?/i, (msg) ->
-    msg.reply "Consolidating waffle orders...\n#{getAvailableFlavours()}"
+    msg.send "@here: Consolidating waffle orders...\n" +
+      "*Available flavours*: #{waffleTypes.join(', ')}\n" +
+      "*Need help?* say `waffles help`"
     date = new Date()
     # start a new order by setting the current time and setting the order keys to empty arrays
     # the array will store the list of user names
@@ -66,13 +68,31 @@ module.exports = (robot) ->
     spotRequest msg, '/say', 'put', params, (err, res, body) ->
       null
 
-  robot.hear /(plain|kaya|butter|peanut|redbean|chocolate|blueberry|cheese)/i, (msg) ->
+  robot.hear new RegExp("^(#{waffleTypes.join('|')})$", 'i'), (msg) ->
     if isOrderActive()
       waffleType = msg.match[1].toLowerCase()
-      nameList = robot.brain.get(waffleType)
-      nameList.push(msg.message.user.name)
-      robot.brain.set waffleType, nameList
-      msg.reply "#{summaries()}"
+      addOrder(waffleType, msg.message.user.name)
+      msg.reply summaries()
+
+  robot.hear new RegExp("^(#{waffleTypes.join('|')}) for (.*)$", 'i'), (msg) ->
+    if isOrderActive()
+      waffleType = msg.match[1].toLowerCase()
+      recipientName = msg.match[2]
+      addOrder(waffleType, "#{recipientName} _via #{msg.message.user.name}_")
+      msg.reply summaries()
+
+  robot.hear /^cancel$/i, (msg) ->
+    if isOrderActive()
+      deleteOrders(msg.message.user.name)
+      msg.reply summaries()
+
+  robot.hear /^waffles help/i, (msg) ->
+    if isOrderActive()
+      msg.reply "\n*To order*: say `<flavour>`\n" +
+        "*To order for someone else*: say `<flavour> for <name>`\n" +
+        "*To cancel all your orders*: say `cancel`"
+    else
+      msg.reply "\n*To start collecting orders*: say `waffles?`"
 
   robot.hear /(summaries|consolidate|orders)/i, (msg) ->
     if isOrderActive()
