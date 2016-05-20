@@ -57,7 +57,8 @@ module.exports = (robot) ->
   # listen out for waffles? to start consolidating
   robot.hear /waffles\?/i, (msg) ->
     msg.send "@here: Consolidating waffle orders...\n" +
-      "*Available flavours*: #{waffleTypes.join(', ')}"
+      "*Available flavours*: #{waffleTypes.join(', ')}\n" +
+      "*Need help?* say `waffles help`"
     date = new Date()
     # start a new order by setting the current time and setting the order keys to empty arrays
     # the array will store the list of user names
@@ -84,6 +85,14 @@ module.exports = (robot) ->
     if isOrderActive()
       deleteOrders(msg.message.user.name)
       msg.reply summaries()
+
+  robot.hear /^waffles help/i, (msg) ->
+    if isOrderActive()
+      msg.reply "\n*To order*: say `<flavour>`\n" +
+        "*To order for someone else*: say `<flavour> for <name>`\n" +
+        "*To cancel all your orders*: say `cancel`"
+    else
+      msg.reply "\n*To start collecting orders*: say `waffles?`"
 
   robot.hear /(summaries|consolidate|orders)/i, (msg) ->
     if isOrderActive()
