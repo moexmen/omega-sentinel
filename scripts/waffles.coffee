@@ -39,7 +39,7 @@ module.exports = (robot) ->
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
         .filter (order_name) ->
-          order_name != name and not order_name.endsWith " via #{name}"
+          order_name != name and not order_name.endsWith " _via #{name}_"
       robot.brain.set waffleType, nameList
 
   # returns true if the waffles? command was issued within the last 15 minutes
