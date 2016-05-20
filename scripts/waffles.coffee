@@ -6,6 +6,7 @@
 #   waffles? - start listening for and consolidating waffle orders
 #   <flavour> - when active, typing a flavour adds it to the order
 #   <flavour> for <name> - when active, adds someone else's flavour to the order for them
+#   cancel - when active, cancels all of your orders
 #
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
@@ -33,6 +34,13 @@ module.exports = (robot) ->
     nameList = robot.brain.get(waffleType)
     nameList.push(name)
     robot.brain.set(waffleType, nameList)
+
+  deleteOrders = (name) ->
+    for waffleType in waffleTypes
+      nameList = robot.brain.get(waffleType)
+        .filter (order_name) ->
+          order_name != name and not order_name.endsWith " via #{name}"
+      robot.brain.set waffleType, nameList
 
   # returns true if the waffles? command was issued within the last 15 minutes
   # false otherwise
@@ -70,6 +78,11 @@ module.exports = (robot) ->
       waffleType = msg.match[1].toLowerCase()
       recipientName = msg.match[2]
       addOrder(waffleType, "#{recipientName} via #{msg.message.user.name}")
+      msg.reply summaries()
+
+  robot.hear /^cancel$/i, (msg) ->
+    if isOrderActive()
+      deleteOrders(msg.message.user.name)
       msg.reply summaries()
 
   robot.hear /(summaries|consolidate|orders)/i, (msg) ->
