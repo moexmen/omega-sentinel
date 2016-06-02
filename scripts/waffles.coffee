@@ -104,5 +104,5 @@ module.exports = (robot) ->
   robot.hear /^waffles stop$/i, (msg) ->
     if isOrderActive()
       robot.brain.set('waffleTime', Date.now() - TIMEOUT)
-      msg.reply '*No more orders!* ' + summaries()
+      msg.reply '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
 
