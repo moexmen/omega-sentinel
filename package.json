@@ -17,8 +17,8 @@
     "hubot-scripts": "^2.0.0",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^3.0.0",
-    "hubot-spot": "^1.0",
-    "hubot-standup-alarm": "0.0.7"
+    "hubot-standup-alarm": "0.0.7",
+    "hubot-xkcd": "0.0.3"
   },
   "engines": {
     "node": "0.10.x"

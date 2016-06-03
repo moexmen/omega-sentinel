@@ -11,14 +11,7 @@
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
 waffleReminders = [5, 3, 1] # minutes till timeout
-URL = process.env.HUBOT_SPOT_URL || "http://localhost:5051"
 TIMEOUT = 15 * 60 * 1000
-
-# Send a request to spot
-spotRequest = (message, path, action, options, callback) ->
-  message.http("#{URL}#{path}")
-    .query(options)[action]() (err, res, body) ->
-      callback(err,res,body)
 
 module.exports = (robot) ->
   # produces a summary of current orders
@@ -77,9 +70,6 @@ module.exports = (robot) ->
       if robot.brain.get('waffleTime') == date
         msg.send '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
     ), TIMEOUT
-    params = {what: 'Taking waffle orders'}
-    spotRequest msg, '/say', 'put', params, (err, res, body) ->
-      null
 
   robot.hear new RegExp("^(#{waffleTypes.join('|')})$", 'i'), (msg) ->
     if isOrderActive()
