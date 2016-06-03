@@ -10,6 +10,7 @@
 #
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
+waffleReminders = [5, 3, 1] # minutes till timeout
 URL = process.env.HUBOT_SPOT_URL || "http://localhost:5051"
 TIMEOUT = 15 * 60 * 1000
 
@@ -65,6 +66,17 @@ module.exports = (robot) ->
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
     robot.brain.set(waffleType, []) for waffleType in waffleTypes
+    # set countdown reminders
+    waffleReminders.forEach (reminder) ->
+      setTimeout (->
+        if isOrderActive() and robot.brain.get('waffleTime') == date
+          msg.send "Waffle orders will stop in #{reminder} min!"
+      ), (TIMEOUT - reminder * 60 * 1000)
+    # set end action
+    setTimeout (->
+      if robot.brain.get('waffleTime') == date
+        msg.send '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
+    ), TIMEOUT
     params = {what: 'Taking waffle orders'}
     spotRequest msg, '/say', 'put', params, (err, res, body) ->
       null
@@ -104,5 +116,5 @@ module.exports = (robot) ->
   robot.hear /^waffles stop$/i, (msg) ->
     if isOrderActive()
       robot.brain.set('waffleTime', Date.now() - TIMEOUT)
-      msg.reply '*No more orders!* ' + summaries()
+      msg.reply '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
 
