@@ -35,7 +35,8 @@ quotes = [
   "I'm quite stunned that you all are quite stunned by this thing.",
   "Before you're married, you're single.",
   "I can do it in my sleep!",
-  "Unfortunately I'm going to be here for a few more years."
+  "Unfortunately I'm going to be here for a few more years.",
+  "It's just a boolean!!"
 ]
 
 module.exports = (robot) ->
