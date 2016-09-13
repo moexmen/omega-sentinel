@@ -36,7 +36,8 @@ quotes = [
   "Before you're married, you're single.",
   "I can do it in my sleep!",
   "Unfortunately I'm going to be here for a few more years.",
-  "It's just a boolean!!"
+  "It's just a boolean!!",
+  "That's an opportunity! Not a limitation."
 ]
 
 module.exports = (robot) ->
