@@ -5,12 +5,6 @@
 # Commands:
 #   bozz
 
-emojis =
-  ben: ":ben:",
-  weiqing: ":twq:",
-  eugene: ":eug:",
-  bozz: ":bozz:"
-
 quotes = [
   "Come I clap for you",
   "Sooo coool",
@@ -23,4 +17,4 @@ quotes = [
 module.exports = (robot) ->
   robot.hear /bozz\b/i, (msg) ->
     if Math.random() < 0.3
-      msg.reply "#{emojis.bozz} #{msg.random quotes}"
+      msg.reply ":bozz: #{msg.random quotes}"
