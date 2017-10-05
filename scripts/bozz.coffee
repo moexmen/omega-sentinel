@@ -16,7 +16,8 @@ quotes = [
   "Sooo coool",
   "Mai la",
   "Today is my cheat day",
-  "Chicken rice is healthy"
+  "Chicken rice is healthy",
+  "The number of stories I get... Madness!"
 ]
 
 module.exports = (robot) ->
