@@ -1,0 +1,12 @@
+version: '3'
+services:
+  omega:
+    build: .
+    depends_on:
+    - redis
+    environment:
+    - HUBOT_SLACK_TOKEN=some_key
+  redis:
+    image: "redis:alpine"
+    ports:
+    - "6379:6379"
