@@ -5,8 +5,8 @@ services:
     depends_on:
     - redis
     environment:
-    - HUBOT_SLACK_TOKEN=some_key
+    - HUBOT_SLACK_TOKEN=${SLACK_TOKEN}
   redis:
-    image: "redis:alpine"
+    image: "redis:4-alpine"
     ports:
     - "6379:6379"
