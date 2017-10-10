@@ -1,4 +1,4 @@
-FROM moexmen/node:6
+FROM moexmen/node:8
 
 ADD . /omega/
 WORKDIR /omega
