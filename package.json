@@ -16,7 +16,7 @@
     "hubot-rules": "^0.1.0",
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.3.4",
+    "hubot-slack": "^4.4.0",
     "hubot-standup-alarm": "0.0.7",
     "hubot-xkcd": "0.0.4"
   }
