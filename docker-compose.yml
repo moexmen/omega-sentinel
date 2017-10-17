@@ -1,0 +1,15 @@
+version: '3'
+services:
+  omega:
+    build: .
+    container_name: omega-sentinel
+    depends_on:
+    - redis
+    environment:
+    - HUBOT_SLACK_TOKEN=${SLACK_TOKEN}
+    restart: always
+  redis:
+    image: "redis:4-alpine"
+    ports:
+    - "6379:6379"
+    restart: always
