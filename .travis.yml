@@ -1,9 +1,0 @@
-language: node_js
-sudo: false
-deploy:
-  provider: heroku
-  api_key:
-    secure: ZGpUyz7iL8t4sZRpO/AGeFy0/4XGhWnfPCz/mXSzQyn1aWc3kg3UFfQ+jbqUIhXqT5VQMMunF9gUJnnk2/ZlQCcIEBMB1ydjVD2SgyIQG7YaKeuNt2vVQSWMXYeIYZG4QueaK2smh/lgIKNJlaCo4ma286j2Il5A7ApOCkQLczI=
-  app: xmen-omega-sentinel
-  on:
-    repo: moexmen/omega-sentinel
