@@ -11,6 +11,8 @@ quotes = [
   "Mai la",
   "Today is my cheat day",
   "Chicken rice is healthy",
+  "For you, for you",
+  "Don't sad, don't sad",
   "The number of stories I get... Madness!"
 ]
 
