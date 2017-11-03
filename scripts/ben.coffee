@@ -39,7 +39,8 @@ quotes = [
   "It's just a boolean!!",
   "That's an opportunity! Not a limitation.",
   "Very simple, except it’s not so simple.",
-  "The problem is that we have a problem."
+  "The problem is that we have a problem.",
+  "I am able to squeeze lemons out of lemonade."
 ]
 
 module.exports = (robot) ->
