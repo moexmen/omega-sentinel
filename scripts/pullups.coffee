@@ -27,23 +27,30 @@ module.exports = (robot) ->
       res.send "Pullup count reset to #{pullupCount}. Tracker reset."
 
   robot.respond /pullups\?/i, (res) ->
-    res.send "#{robot.brain.get('pullupCount')} pullups to prata day!!"
+    pullupsRemaining = robot.brain.get('pullupCount')
+    if pullupsRemaining <= 0
+      res.send "*Let's have a prata day!!!*"
+    else
+      res.send "*#{pullupsRemaining} pullups* to prata day!!"
     res.send pullupSummaries()
 
   robot.respond new RegExp("did (-?\\d+) pullups", "i"), (res) ->
     username = res.message.user.name
+    pullupsDone = Number.parseInt(res.match[1])
     if username is "shadowcat"
       res.send "Swings don't count yet."
     else
-      pullupsDone = Number.parseInt(res.match[1])
       if pullupsDone > 20 or pullupsDone < -20
         res.send "Even :commando: can't do that many pullups at a go"
         return
       pullups_remaining = robot.brain.get("pullupCount") - pullupsDone
       robot.brain.set("pullupCount", pullups_remaining)
-      res.send "*#{res.match[1]} pullups done, #{pullups_remaining} pullups left to prata day!!!*"
+      if pullups_remaining <= 0
+        res.send "*#{res.match[1]} pullups done*.\n*Challenge completed, let's have a prata day!!!*"
+      else
+        res.send "#{res.match[1]} pullups done, *#{pullups_remaining} pullups* left to prata day!!!"
     pullupTracker = robot.brain.get("pullupTracker")
-    if (username in pullupTracker)
+    if (username of pullupTracker)
       pullupTracker[username] += pullupsDone
     else
       pullupTracker[username] = pullupsDone
