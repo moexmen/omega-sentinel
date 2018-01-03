@@ -33,7 +33,7 @@ module.exports = (robot) ->
       when "prata" then return 10000
 
   robot.respond new RegExp("set bozzcoins to (\\d+)", "i"), (res) ->
-    if res.message.user.name is "Shell"
+    if res.message.user.name is "lockheed"
       bozzcoinBalance = Number.parseInt(res.match[1])
       robot.brain.set "bozzcoinBalance", bozzcoinBalance
       robot.brain.set "bozzcoinTracker", {}
