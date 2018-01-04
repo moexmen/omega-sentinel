@@ -3,7 +3,7 @@
 #
 # Commands: Hubot must be specifically @-mentioned.
 #   bozzcoins? - reports how many bozzcoins are in the account.
-#   did x (pullups|pushups|situps|squats|lunges) - adds bozzcoins to the account depending on the exercise type.
+#   did x (pullups|pushups|situps|squats|lunges|racket steps) - adds bozzcoins to the account depending on the exercise type.
 #   ran x km - adds 100 bozzcoins per km.
 #   prata day - subtracts 10000 bozzcoins.
 
@@ -22,6 +22,7 @@ module.exports = (robot) ->
       when "pullups" then return 10
       when "pushups", "situps", "squats", "lunges" then return 1
       when "run" then return 100
+      when "racket steps" then return 1 / 12
       else return 0
 
   convertToBozzcoin = (reps, exerciseType) ->
@@ -46,7 +47,7 @@ module.exports = (robot) ->
     res.send "*#{bozzcoinBalance}* :bozzcoin:"
     res.send bozzcoinSummaries()
 
-  robot.respond new RegExp("did (-?\\d+) (pullups|pushups|situps|squats|lunges)", "i"), (res) ->
+  robot.respond new RegExp("did (-?\\d+) (pullups|pushups|situps|squats|lunges|racket steps)", "i"), (res) ->
     username = res.message.user.name
     repsDone = Number.parseInt(res.match[1])
     exerciseType = res.match[2]
