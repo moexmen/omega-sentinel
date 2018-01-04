@@ -20,10 +20,11 @@ module.exports = (robot) ->
     switch exerciseType
       when "pullups" then return 10
       when "pushups", "situps" then return 1
+      when "run" then return 100
       else return 0
 
   convertToBozzcoin = (reps, exerciseType) ->
-    return reps * earnRate(exerciseType)
+    return Math.floor(reps * earnRate(exerciseType))
 
   convertToReps = (bozzcoin, exerciseType) ->
     return bozzcoin / earnRate(exerciseType)
@@ -76,6 +77,26 @@ module.exports = (robot) ->
       bozzcoinTracker[username] += convertToBozzcoin(repsDone, exerciseType)
     else
       bozzcoinTracker[username] = convertToBozzcoin(repsDone, exerciseType)
+    robot.brain.set("bozzcoinTracker", bozzcoinTracker)
+
+  robot.respond new RegExp("ran (-?\\d+.?\\d*) ?km", "i"), (res) ->
+    username = res.message.user.name
+    distanceInKm = Number.parseFloat(res.match[1])
+    bozzcoinTracker = robot.brain.get("bozzcoinTracker")
+    if (username of bozzcoinTracker)
+      distanceByUser = convertToReps(bozzcoinTracker[username], "run")
+    else
+      distanceByUser = 0
+    if distanceInKm < (-1 * distanceByUser)
+      res.send "You can't undo more than you have done"
+      return
+    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + convertToBozzcoin(distanceInKm, "run")
+    robot.brain.set("bozzcoinBalance", newBozzcoinBalance)
+    res.send "#{distanceInKm.toFixed(3)} km ran, *#{newBozzcoinBalance}* :bozzcoin: available!"
+    if (username of bozzcoinTracker)
+      bozzcoinTracker[username] += convertToBozzcoin(distanceInKm, "run")
+    else
+      bozzcoinTracker[username] = convertToBozzcoin(distanceInKm, "run")
     robot.brain.set("bozzcoinTracker", bozzcoinTracker)
 
   robot.respond new RegExp("(prata) day", "i"), (res) ->
