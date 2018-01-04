@@ -72,6 +72,10 @@ module.exports = (robot) ->
           if repsDone > 20
             res.send "Even :commando: can't do that many pullups at a go"
             return
+      when "racket steps"
+        if repsDone > 13000
+          res.send "Are you sure you can play longer than :pohneo:?"
+          return
     newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + convertToBozzcoin(repsDone, exerciseType)
     robot.brain.set("bozzcoinBalance", newBozzcoinBalance)
     res.send "#{res.match[1]} #{exerciseType} done, *#{newBozzcoinBalance}* :bozzcoin: available!"
