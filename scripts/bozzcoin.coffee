@@ -3,7 +3,8 @@
 #
 # Commands: Hubot must be specifically @-mentioned.
 #   bozzcoins? - reports how many bozzcoins are in the account.
-#   did x (pullups|pushups|situps) - adds bozzcoins to the account depending on the exercise type.
+#   did x (pullups|pushups|situps|squats|lunges) - adds bozzcoins to the account depending on the exercise type.
+#   ran x km - adds 100 bozzcoins per km.
 #   prata day - subtracts 10000 bozzcoins.
 
 module.exports = (robot) ->
@@ -19,7 +20,7 @@ module.exports = (robot) ->
   earnRate = (exerciseType) ->
     switch exerciseType
       when "pullups" then return 10
-      when "pushups", "situps" then return 1
+      when "pushups", "situps", "squats", "lunges" then return 1
       when "run" then return 100
       else return 0
 
@@ -45,7 +46,7 @@ module.exports = (robot) ->
     res.send "*#{bozzcoinBalance}* :bozzcoin:"
     res.send bozzcoinSummaries()
 
-  robot.respond new RegExp("did (-?\\d+) (pullups|pushups|situps)", "i"), (res) ->
+  robot.respond new RegExp("did (-?\\d+) (pullups|pushups|situps|squats|lunges)", "i"), (res) ->
     username = res.message.user.name
     repsDone = Number.parseInt(res.match[1])
     exerciseType = res.match[2]
@@ -58,7 +59,7 @@ module.exports = (robot) ->
       res.send "You can't undo more than you have done"
       return
     switch exerciseType
-      when "pushups", "situps"
+      when "pushups", "situps", "squats", "lunges"
         if repsDone > 60
           res.send "Show the team you can do more #{exerciseType} than :commando:"
           return
