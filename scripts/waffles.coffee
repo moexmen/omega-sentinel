@@ -12,6 +12,7 @@
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
 waffleReminders = [5, 3, 1] # minutes till timeout
 TIMEOUT = 15 * 60 * 1000
+WAFFLE_MAKETIME = 1.5 # in minutes
 
 module.exports = (robot) ->
   # produces a summary of current orders
@@ -37,6 +38,18 @@ module.exports = (robot) ->
           order_name != name and not order_name.endsWith " _via #{name}_"
       robot.brain.set waffleType, nameList
 
+  endOrder = () ->
+    msg = robot.brain.get('initialMsg')
+    totalWaffles = (robot.brain.get(waffleType).length for waffleType in waffleTypes)
+      .reduce (x, y) -> x + y
+    waitTime = totalWaffles * WAFFLE_MAKETIME
+    setTimeout (->
+      msg.reply 'You can go down to collect the waffles nao nao!!~~'
+    ), waitTime * 60 * 1000
+    endMsg = '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order.\n"
+    endMsg += "Go down in #{waitTime} minutes ok?\n"
+    msg.reply endMsg
+
   # returns true if the waffles? command was issued within the last 15 minutes
   # false otherwise
   isOrderActive = () ->
@@ -59,6 +72,7 @@ module.exports = (robot) ->
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
     robot.brain.set(waffleType, []) for waffleType in waffleTypes
+    robot.brain.set('initialMsg', msg)
     # set countdown reminders
     waffleReminders.forEach (reminder) ->
       setTimeout (->
@@ -68,7 +82,7 @@ module.exports = (robot) ->
     # set end action
     setTimeout (->
       if robot.brain.get('waffleTime') == date
-        msg.send '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
+        endOrder()
     ), TIMEOUT
 
   robot.hear new RegExp("^(#{waffleTypes.join('|')})$", 'i'), (msg) ->
@@ -106,5 +120,4 @@ module.exports = (robot) ->
   robot.hear /^waffles stop$/i, (msg) ->
     if isOrderActive()
       robot.brain.set('waffleTime', Date.now() - TIMEOUT)
-      msg.reply '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
-
+      endOrder()
