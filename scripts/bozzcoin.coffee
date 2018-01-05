@@ -26,7 +26,7 @@ module.exports = (robot) ->
       else return 0
 
   convertToBozzcoin = (reps, exerciseType) ->
-    return Math.floor(reps * earnRate(exerciseType))
+    return Math.round(reps * earnRate(exerciseType))
 
   convertToReps = (bozzcoin, exerciseType) ->
     return bozzcoin / earnRate(exerciseType)
