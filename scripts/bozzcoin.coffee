@@ -12,7 +12,8 @@ module.exports = (robot) ->
   bozzcoinSummaries = () ->
     output = "\n"
     bozzcoinTracker = robot.brain.get("bozzcoinTracker")
-    for name of bozzcoinTracker
+    sortedBozzcoinTracker = (Object.keys bozzcoinTracker).sort((a, b) -> bozzcoinTracker[b] - bozzcoinTracker[a])
+    for name in sortedBozzcoinTracker
       bozzcoinsContributed = bozzcoinTracker[name]
       output += (if name is "rurouni" then "*#{name}*" else name) + ": #{bozzcoinsContributed} :bozzcoin: contributed.\n"
     output
