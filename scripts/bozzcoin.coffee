@@ -22,8 +22,8 @@ module.exports = (robot) ->
     switch exerciseType
       when "pullups" then return 10
       when "pushups", "situps", "squats", "lunges" then return 1
-      when "run" then return 100
-      when "racket steps" then return 1 / 12
+      when "run" then return 50
+      when "racket steps" then return 1 / 18
       else return 0
 
   convertToBozzcoin = (reps, exerciseType) ->
@@ -34,7 +34,7 @@ module.exports = (robot) ->
 
   cheatDayPrices = (cheatType) ->
     switch cheatType
-      when "prata" then return 10000
+      when "prata" then return 12000
 
   robot.respond new RegExp("set bozzcoins to (\\d+)", "i"), (res) ->
     if res.message.user.name is "lockheed"
