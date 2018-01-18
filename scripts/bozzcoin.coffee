@@ -98,9 +98,10 @@ module.exports = (robot) ->
     if repsDone > 0 && updateBozziplier(username)
       res.send ":bozz: Bozziplier reset like a bozz"
     bozziplier = robot.brain.get("bozziplier")
-    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + convertToBozzcoin(repsDone, exerciseType)
+    bozzcoinEarned = convertToBozzcoin(repsDone, exerciseType)
+    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + bozzcoinEarned
     robot.brain.set("bozzcoinBalance", newBozzcoinBalance)
-    res.send "#{res.match[1]} #{exerciseType} done with bozzplier of #{bozziplier}, *#{newBozzcoinBalance}* :bozzcoin: available!"
+    res.send "#{res.match[1]} #{exerciseType} done, earned *#{bozzcoinEarned}* :bozzcoin: with bozziplier of #{bozziplier}.\n*#{newBozzcoinBalance}* :bozzcoin: available!"
     if (username of bozzcoinTracker)
       bozzcoinTracker[username] += convertToBozzcoin(repsDone, exerciseType)
     else
