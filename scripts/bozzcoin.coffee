@@ -5,7 +5,7 @@
 #   bozzcoins? - reports how many bozzcoins are in the account.
 #   did x (pullups|pushups|situps|squats|lunges|racket steps) - adds bozzcoins to the account depending on the exercise type.
 #   ran x km - adds 100 bozzcoins per km.
-#   prata day - subtracts 10000 bozzcoins.
+#   (prata|starbucks|macs) day - subtracts bozzcoins depending on the cheat type.
 
 module.exports = (robot) ->
   # produces a summary of who has contributed bozzcoins
@@ -22,8 +22,8 @@ module.exports = (robot) ->
     switch exerciseType
       when "pullups" then return 10
       when "pushups", "situps", "squats", "lunges" then return 1
-      when "run" then return 100
-      when "racket steps" then return 1 / 12
+      when "run" then return 50
+      when "racket steps" then return 1 / 18
       else return 0
 
   convertToBozzcoin = (reps, exerciseType) ->
@@ -34,7 +34,9 @@ module.exports = (robot) ->
 
   cheatDayPrices = (cheatType) ->
     switch cheatType
-      when "prata" then return 10000
+      when "prata" then return 12000
+      when "starbucks" then return 5000
+      when "macs" then return 7000
 
   robot.respond new RegExp("set bozzcoins to (\\d+)", "i"), (res) ->
     if res.message.user.name is "lockheed"
@@ -106,7 +108,7 @@ module.exports = (robot) ->
       bozzcoinTracker[username] = convertToBozzcoin(distanceInKm, "run")
     robot.brain.set("bozzcoinTracker", bozzcoinTracker)
 
-  robot.respond new RegExp("(prata) day", "i"), (res) ->
+  robot.respond new RegExp("(prata|starbucks|macs) day", "i"), (res) ->
     cheatType = res.match[1]
     newBozzcoinBalance = robot.brain.get("bozzcoinBalance") - cheatDayPrices(cheatType)
     if newBozzcoinBalance < 0
