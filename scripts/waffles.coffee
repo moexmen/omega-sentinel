@@ -9,7 +9,7 @@
 #   cancel - when active, cancels all of your orders
 #
 
-waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'chocolate', 'blueberry', 'cheese']
+waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'blueberry', 'cheese']
 waffleReminders = [5, 3, 1] # minutes till timeout
 TIMEOUT = 15 * 60 * 1000
 WAFFLE_MAKETIME = 1.5 # in minutes
