@@ -9,7 +9,9 @@
 
 module.exports = (robot) ->
   # number of days bozz can go without exercising
-  bozziplierThreshold = 1
+  bozziplierThreshold = 2
+  # multiplier decay for bozziplier
+  bozziplierDecay = 0.8
 
   # produces a summary of who has contributed bozzcoins
   bozzcoinSummaries = () ->
@@ -39,8 +41,10 @@ module.exports = (robot) ->
       bozzLastExercised = robot.brain.get("bozzLastExercised")
       if !bozzLastExercised || new Date().getTime() - new Date(bozzLastExercised).getTime() > bozziplierThreshold * 86400000 # threshold times milliseconds in a day
         bozziplier = robot.brain.get("bozziplier")
-        if !bozziplier then bozziplier = 1
-        newBozziplier = bozziplier * 0.5
+        if !bozziplier
+          bozziplier = 1
+          robot.brain.set("bozzLastExercised", new Date())
+        newBozziplier = bozziplier * bozziplierDecay
         robot.brain.set("bozziplier", newBozziplier)
     return false
 
