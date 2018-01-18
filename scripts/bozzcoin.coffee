@@ -33,11 +33,13 @@ module.exports = (robot) ->
   updateBozziplier = (username) ->
     if username is "rurouni"
       robot.brain.set("bozzLastExercised", new Date())
+      robot.brain.set("bozziplier", 1)
       return true
     else
       bozzLastExercised = robot.brain.get("bozzLastExercised")
       if !bozzLastExercised || new Date().getTime() - new Date(bozzLastExercised).getTime() > bozziplierThreshold * 86400000 # threshold times milliseconds in a day
         bozziplier = robot.brain.get("bozziplier")
+        if !bozziplier then bozziplier = 1
         newBozziplier = bozziplier * 0.5
         robot.brain.set("bozziplier", newBozziplier)
     return false
