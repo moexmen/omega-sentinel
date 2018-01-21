@@ -25,12 +25,19 @@ module.exports = (robot) ->
 
   earnRate = (exerciseType) ->
     switch exerciseType
+      when "cycle" then return 20
       when "pullups" then return 10
       when "pushups", "situps", "squats", "lunges" then return 1
       when "run" then return 50
       when "racket steps" then return 1 / 18
       else return 0
-  
+
+  verbToExerciseType = (verb) ->
+    switch verb
+      when "ran" then return "run"
+      when "cycled" then return "cycle"
+      else return verb
+
   # returns true if bozziplier is reset
   updateBozziplier = (username) ->
     if username is "rurouni"
@@ -114,12 +121,13 @@ module.exports = (robot) ->
       bozzcoinTracker[username] = convertToBozzcoin(repsDone, exerciseType)
     robot.brain.set("bozzcoinTracker", bozzcoinTracker)
 
-  robot.respond new RegExp("ran (-?\\d+.?\\d*) ?km", "i"), (res) ->
+  robot.respond new RegExp("(ran|cycled) (-?\\d+.?\\d*) ?km", "i"), (res) ->
     username = res.message.user.name
-    distanceInKm = Number.parseFloat(res.match[1])
+    verb = res.match[1]
+    distanceInKm = Number.parseFloat(res.match[2])
     bozzcoinTracker = robot.brain.get("bozzcoinTracker")
     if (username of bozzcoinTracker)
-      distanceByUser = convertToReps(bozzcoinTracker[username], "run")
+      distanceByUser = convertToReps(bozzcoinTracker[username], verbToExerciseType(verb))
     else
       distanceByUser = 0
     if distanceInKm < (-1 * distanceByUser)
@@ -127,13 +135,13 @@ module.exports = (robot) ->
       return
     if distanceInKm > 0 && updateBozziplier(username)
       res.send ":bozz: Bozziplier reset like a bozz"
-    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + convertToBozzcoin(distanceInKm, "run")
+    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
     robot.brain.set("bozzcoinBalance", newBozzcoinBalance)
     res.send "#{distanceInKm.toFixed(3)} km ran, *#{newBozzcoinBalance}* :bozzcoin: available!"
     if (username of bozzcoinTracker)
-      bozzcoinTracker[username] += convertToBozzcoin(distanceInKm, "run")
+      bozzcoinTracker[username] += convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
     else
-      bozzcoinTracker[username] = convertToBozzcoin(distanceInKm, "run")
+      bozzcoinTracker[username] = convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
     robot.brain.set("bozzcoinTracker", bozzcoinTracker)
 
   robot.respond new RegExp("(prata|starbucks|macs) day", "i"), (res) ->
