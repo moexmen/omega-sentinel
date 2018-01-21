@@ -135,13 +135,15 @@ module.exports = (robot) ->
       return
     if distanceInKm > 0 && updateBozziplier(username)
       res.send ":bozz: Bozziplier reset like a bozz"
-    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
+    bozziplier = robot.brain.get("bozziplier")
+    bozzcoinEarned = convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
+    newBozzcoinBalance = robot.brain.get("bozzcoinBalance") + bozzcoinEarned
     robot.brain.set("bozzcoinBalance", newBozzcoinBalance)
-    res.send "#{distanceInKm.toFixed(3)} km ran, *#{newBozzcoinBalance}* :bozzcoin: available!"
+    res.send "#{distanceInKm.toFixed(3)} km #{verb}, earned *#{bozzcoinEarned}* :bozzcoin: with bozziplier of #{bozziplier}.\n*#{newBozzcoinBalance}* :bozzcoin: available!"
     if (username of bozzcoinTracker)
-      bozzcoinTracker[username] += convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
+      bozzcoinTracker[username] += bozzcoinEarned
     else
-      bozzcoinTracker[username] = convertToBozzcoin(distanceInKm, verbToExerciseType(verb))
+      bozzcoinTracker[username] = bozzcoinEarned
     robot.brain.set("bozzcoinTracker", bozzcoinTracker)
 
   robot.respond new RegExp("(prata|starbucks|macs) day", "i"), (res) ->
