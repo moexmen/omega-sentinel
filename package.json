@@ -4,6 +4,10 @@
   "private": true,
   "author": "Jason Yeo <jasonyeo88@gmail.com>",
   "description": "A simple helpful robot for your Company",
+  "scripts": {
+    "lint": "./node_modules/.bin/eslint .",
+    "prepush": "npm run lint"
+  },
   "dependencies": {
     "hubot": "^3.0.1",
     "hubot-diagnostics": "^1.0.0",
@@ -19,5 +23,13 @@
     "hubot-slack": "^4.4.0",
     "hubot-standup-alarm": "0.0.7",
     "hubot-xkcd": "0.0.4"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.5.1",
+    "husky": "^0.14.3"
   }
 }
