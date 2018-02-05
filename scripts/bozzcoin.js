@@ -45,34 +45,31 @@ module.exports = (robot) => {
     }
   }
 
-  function bozzExercisesFrequentEnough() {
-    const thresholdInMilliSecs = bozziplierThreshold * 86400000;
-    const bozzLastExercised = robot.brain.get('bozzLastExercised');
-    return (new Date().getTime() - new Date(bozzLastExercised).getTime()) <= thresholdInMilliSecs;
-  }
-
   // returns true if bozziplier is reset
-  function updateBozziplier(username) {
+  function updateBozzExerciseTime(username) {
     if (username === 'rurouni') {
       robot.brain.set('bozzLastExercised', new Date());
-      robot.brain.set('bozziplier', 1);
       return true;
     }
+    // Initialize bozzLastExercised if it has not been set before.
     const bozzLastExercised = robot.brain.get('bozzLastExercised');
-    if (!bozzLastExercised || !bozzExercisesFrequentEnough()) {
-      let bozziplier = robot.brain.get('bozziplier');
-      if (!bozziplier) {
-        bozziplier = 1;
-        robot.brain.set('bozzLastExercised', new Date());
-      }
-      const newBozziplier = bozziplier * bozziplierDecay;
-      robot.brain.set('bozziplier', newBozziplier);
+    if (!bozzLastExercised) {
+      robot.brain.set('bozzLastExercised', new Date());
     }
     return false;
   }
 
+  function calculateBozziplier() {
+    const thresholdInMilliSecs = bozziplierThreshold * 86400000;
+    const bozzLastExercised = robot.brain.get('bozzLastExercised');
+    const numberOfThresholdPeriods = Math.floor((new Date().getTime() -
+      new Date(bozzLastExercised).getTime()) / thresholdInMilliSecs);
+
+    return bozziplierDecay ** numberOfThresholdPeriods;
+  }
+
   function convertToBozzcoin(reps, exerciseType) {
-    return Math.round(reps * earnRate(exerciseType) * robot.brain.get('bozziplier'));
+    return Math.round(reps * earnRate(exerciseType) * calculateBozziplier());
   }
 
   function convertToReps(bozzcoin, exerciseType) {
@@ -143,10 +140,10 @@ module.exports = (robot) => {
       default:
         res.send(`Please consult the committee on the legitimacy of _${exerciseType}_.`);
     }
-    if ((repsDone > 0) && updateBozziplier(username)) {
+    if ((repsDone > 0) && updateBozzExerciseTime(username)) {
       res.send(':bozz: Bozziplier reset like a bozz');
     }
-    const bozziplier = robot.brain.get('bozziplier');
+    const bozziplier = calculateBozziplier();
     const bozzcoinEarned = convertToBozzcoin(repsDone, exerciseType);
     const newBozzcoinBalance = robot.brain.get('bozzcoinBalance') + bozzcoinEarned;
     robot.brain.set('bozzcoinBalance', newBozzcoinBalance);
@@ -174,10 +171,10 @@ module.exports = (robot) => {
       res.send('You can\'t undo more than you have done');
       return;
     }
-    if ((distanceInKm > 0) && updateBozziplier(username)) {
+    if ((distanceInKm > 0) && updateBozzExerciseTime(username)) {
       res.send(':bozz: Bozziplier reset like a bozz');
     }
-    const bozziplier = robot.brain.get('bozziplier');
+    const bozziplier = calculateBozziplier();
     const bozzcoinEarned = convertToBozzcoin(distanceInKm, verbToExerciseType(verb));
     const newBozzcoinBalance = robot.brain.get('bozzcoinBalance') + bozzcoinEarned;
     robot.brain.set('bozzcoinBalance', newBozzcoinBalance);
