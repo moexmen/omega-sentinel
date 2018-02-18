@@ -3,7 +3,7 @@
 //
 // Commands: Hubot must be specifically @-mentioned.
 //   bozzcoins? - reports how many bozzcoins are in the account.
-//   did x (pullups|pushups|situps|squats|lunges|sport steps)
+//   did x (pullups|pushups|situps|squats|lunges|sport steps|gym reps)
 //      - adds bozzcoins to the account depending on the exercise type.
 //   ran x km - adds 100 bozzcoins per km.
 //   (prata|starbucks|macs) day - subtracts bozzcoins depending on the cheat type.
@@ -29,8 +29,8 @@ module.exports = (robot) => {
   function earnRate(exerciseType) {
     switch (exerciseType) {
       case 'cycle': return 20;
-      case 'pullups': return 10;
-      case 'pushups': case 'situps': case 'squats': case 'lunges': return 1;
+      case 'pullups': return 7;
+      case 'pushups': case 'situps': case 'squats': case 'lunges': case 'gym reps': return 1;
       case 'run': return 50;
       case 'sport steps': return 1 / 18;
       default: return 0;
@@ -100,7 +100,7 @@ module.exports = (robot) => {
     res.send(bozzcoinSummaries());
   });
 
-  robot.respond(new RegExp('did (-?\\d+) (pullups|pushups|situps|squats|lunges|sport steps)', 'i'), (res) => {
+  robot.respond(new RegExp('did (-?\\d+) (pullups|pushups|situps|squats|lunges|sport steps|gym reps)', 'i'), (res) => {
     let repsByUser;
     const username = res.message.user.name;
     const repsDone = Number.parseInt(res.match[1], 10);
@@ -116,8 +116,8 @@ module.exports = (robot) => {
       return;
     }
     switch (exerciseType) {
-      case 'pushups': case 'situps': case 'squats': case 'lunges':
-        if (repsDone > 60) {
+      case 'pushups': case 'situps': case 'squats': case 'lunges': case 'gym reps':
+        if (repsDone > 100) {
           res.send(`Show the team you can do more ${exerciseType} than :commando:`);
           return;
         }
