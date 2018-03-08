@@ -13,6 +13,9 @@ module.exports = (robot) => {
   const bozziplierThreshold = 2;
   // multiplier decay for bozziplier
   const bozziplierDecay = 0.8;
+  // the number of bozzcoins to earn to uncover each cell of the picture.
+  // prata day cost divided by total number of cells in the picture.
+  const bozzcoinsPerPictureCell = 10;
 
   // produces a summary of who has contributed bozzcoins
   function bozzcoinSummaries() {
@@ -24,6 +27,11 @@ module.exports = (robot) => {
       output.push(`${(name === 'rurouni' ? `*${name}*` : name)}: ${bozzcoinsContributed} :bozzcoin: contributed.`);
     });
     return `\n${output.join('\n')}`;
+  }
+
+  function pictureURL(bozzcoinBalance) {
+    const pictureNumber = Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell);
+    return `http://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
   }
 
   function earnRate(exerciseType) {
@@ -98,6 +106,7 @@ module.exports = (robot) => {
     const bozzcoinBalance = robot.brain.get('bozzcoinBalance');
     res.send(`*${bozzcoinBalance}* :bozzcoin:`);
     res.send(bozzcoinSummaries());
+    res.send(pictureURL(bozzcoinBalance));
   });
 
   robot.respond(new RegExp('did (-?\\d+) (pullups|pushups|situps|squats|lunges|sport steps)', 'i'), (res) => {
