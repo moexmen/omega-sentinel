@@ -16,6 +16,7 @@ module.exports = (robot) => {
   // the number of bozzcoins to earn to uncover each cell of the picture.
   // prata day cost divided by total number of cells in the picture.
   const bozzcoinsPerPictureCell = 10;
+  const prataDayCost = 12000;
 
   // produces a summary of who has contributed bozzcoins
   function bozzcoinSummaries() {
@@ -30,7 +31,7 @@ module.exports = (robot) => {
   }
 
   function pictureURL(bozzcoinBalance) {
-    const pictureNumber = Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell);
+    const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell), prataDayCost / bozzcoinsPerPictureCell);
     return `http://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
   }
 
@@ -86,7 +87,7 @@ module.exports = (robot) => {
 
   function cheatDayPrices(cheatType) {
     switch (cheatType) {
-      case 'prata': return 12000;
+      case 'prata': return prataDayCost;
       case 'starbucks': return 5000;
       case 'macs': return 7000;
       default: return 0;
