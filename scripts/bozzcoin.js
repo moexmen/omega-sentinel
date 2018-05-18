@@ -32,7 +32,7 @@ module.exports = (robot) => {
 
   function pictureURL(bozzcoinBalance) {
     const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell), prataDayCost / bozzcoinsPerPictureCell);
-    return `http://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
+    return `https://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
   }
 
   function earnRate(exerciseType) {
