@@ -86,7 +86,7 @@ module.exports = (robot) => {
   }
 
   function cheatDayPrices(cheatType) {
-    switch (cheatType) {
+    switch (cheatType.toLowerCase()) {
       case 'prata': return prataDayCost;
       case 'starbucks': return 5000;
       case 'macs': return 7000;
