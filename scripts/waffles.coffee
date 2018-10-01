@@ -10,6 +10,7 @@
 #
 
 waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'blueberry', 'cheese']
+wafflePrices = {'plain': 1.2, 'kaya': 1.5, 'butter': 1.5, 'peanut': 1.5, 'redbean': 1.5, 'blueberry': 1.8, 'cheese': 1.8, 'chocolate': 1.8}
 waffleReminders = [5, 3, 1] # minutes till timeout
 TIMEOUT = 15 * 60 * 1000
 
@@ -24,6 +25,13 @@ module.exports = (robot) ->
       output += "*#{waffleType}*: #{numType} #{names}\n" if numType != 0
     output
 
+  calcPrice = () ->
+    totalPrice = 0
+    for waffleType in waffleTypes
+      nameList = robot.brain.get(waffleType)
+      numType = nameList.length
+      totalPrice += numType * wafflePrices[waffleType]
+    "#{totalPrice.toFixed 2}"
 
   addOrder = (waffleType, name) ->
     nameList = robot.brain.get(waffleType)
@@ -106,5 +114,5 @@ module.exports = (robot) ->
   robot.hear /^waffles stop$/i, (msg) ->
     if isOrderActive()
       robot.brain.set('waffleTime', Date.now() - TIMEOUT)
-      msg.reply '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
+      msg.reply '*No more orders!* ' + summaries() + "\nTotal Price: $" + calcPrice() + "\nCall *6469 3360* to order."
 
