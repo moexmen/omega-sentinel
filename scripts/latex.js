@@ -2,7 +2,7 @@
 //   Renders LaTeX equations using Google Charts API
 //
 // Commands:
-//   hubot $e^{\pi i} - 1 = 0$
+//   hubot $e^{\pi i} - 1 = 0$ - render LaTeX equation
 //
 //
 

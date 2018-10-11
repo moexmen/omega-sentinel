@@ -1,3 +1,13 @@
+// Description:
+//   Looks up school names by school code, or school codes by school name
+//
+// Commands:
+//   hubot find school 1234 - lookup by school code
+//   hubot find school Example Primary - lookup by school name
+//   hubot find school EPS - lookup by school initials
+//
+//
+
 const schools = {
   7118: 'CHIJ ST. NICHOLAS GIRLS\' SCHOOL',
   1727: 'JUNYUAN PRIMARY SCHOOL',

@@ -4,9 +4,12 @@
 //
 // Commands:
 //   waffles? - start listening for and consolidating waffle orders
-//   <flavour> - when active, typing a flavour adds it to the order
-//   <flavour> for <name> - when active, adds someone else's flavour to the order for them
-//   cancel - when active, cancels all of your orders
+//   <flavour> - when waffles is active, add order for that flavour
+//   <flavour> for <name> - when waffles is active, adds order for someone else
+//   waffles cancel - when waffles is active, cancels all of your orders
+//   waffles help - display waffles-specific help
+//   waffles orders - when waffles is active, display all orders
+//   waffles stop - when waffles is active, terminate order period immediately
 //
 
 module.exports = (robot) => {

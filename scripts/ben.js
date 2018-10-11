@@ -3,7 +3,6 @@
 //
 //
 // Commands:
-//   quote ben
 //   ben
 //
 //
