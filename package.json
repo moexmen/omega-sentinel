@@ -9,7 +9,7 @@
     "prepush": "npm run lint"
   },
   "dependencies": {
-    "hubot": "^3.0.1",
+    "hubot": "^3.1.1",
     "hubot-diagnostics": "^1.0.0",
     "hubot-fliptable": "^2.0.0",
     "hubot-google-images": "^0.2.0",
@@ -20,16 +20,20 @@
     "hubot-rules": "^1.0.0",
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.0",
-    "hubot-slack": "^4.4.0",
+    "hubot-slack": "^4.5.5",
     "hubot-standup-alarm": "^0.1.0",
     "hubot-xkcd": "^0.0.5"
   },
   "devDependencies": {
-    "eslint": "^4.16.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.5.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
     "husky": "^0.14.3"
+  },
+  "engines": {
+    "node": "> 4.0.0",
+    "npm": "> 2.0.0"
   }
 }
