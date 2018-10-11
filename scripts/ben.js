@@ -1,19 +1,25 @@
-# Description:
-#   Replies with random quotes from Ben Leong
-#
-#
-# Commands:
-#   quote ben
-#   ben
-#
-#
+/*
+ * decaffeinate suggestions:
+ * DS102: Remove unnecessary code created because of implicit returns
+ * Full docs: https://github.com/decaffeinate/decaffeinate/blob/master/docs/suggestions.md
+ */
+// Description:
+//   Replies with random quotes from Ben Leong
+//
+//
+// Commands:
+//   quote ben
+//   ben
+//
+//
 
-emojis =
+const emojis = {
   ben: ":ben:",
   weiqing: ":twq:",
   eugene: ":eug:"
+};
 
-quotes = [
+const quotes = [
   "Want my job?",
   "Sai understand?",
   "People matter, sales matter, execution matters.",
@@ -24,10 +30,10 @@ quotes = [
   "Would you like to give a talk on the book? :-) ",
   "Calling API is not sufficient for ESTL.",
   "Principle of leadership: When things screw up, you take",
-  "I need a deputy to take one for me (#{emojis.weiqing} looks around)",
+  `I need a deputy to take one for me (${emojis.weiqing} looks around)`,
   "好不好?",
   "修身齐家治国平天下。",
-  "Commando #{emojis.eugene} must go in there and plant flag!! (bang table)",
+  `Commando ${emojis.eugene} must go in there and plant flag!! (bang table)`,
   "Our lives are like shit. This is something we have to embrace!",
   "Hard is the norm, impossible is the standard!",
   "Hari-kiri is in fashion nowadays.",
@@ -41,9 +47,12 @@ quotes = [
   "Very simple, except it’s not so simple.",
   "The problem is that we have a problem.",
   "I am able to squeeze lemons out of lemonade."
-]
+];
 
-module.exports = (robot) ->
-  robot.hear /ben\b/i, (msg) ->
-    if Math.random() < 0.3
-      msg.reply "#{emojis.ben} #{msg.random quotes}"
+module.exports = robot =>
+  robot.hear(/ben\b/i, function(msg) {
+    if (Math.random() < 0.3) {
+      return msg.reply(`${emojis.ben} ${msg.random(quotes)}`);
+    }
+  })
+;
