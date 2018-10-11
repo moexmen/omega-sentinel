@@ -31,7 +31,8 @@ module.exports = (robot) => {
   }
 
   function pictureURL(bozzcoinBalance) {
-    const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell), prataDayCost / bozzcoinsPerPictureCell);
+    const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell),
+      prataDayCost / bozzcoinsPerPictureCell);
     return `https://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
   }
 
@@ -71,8 +72,8 @@ module.exports = (robot) => {
   function calculateBozziplier() {
     const thresholdInMilliSecs = bozziplierThreshold * 86400000;
     const bozzLastExercised = robot.brain.get('bozzLastExercised');
-    const numberOfThresholdPeriods = Math.floor((new Date().getTime() -
-      new Date(bozzLastExercised).getTime()) / thresholdInMilliSecs);
+    const numberOfThresholdPeriods = Math.floor((new Date().getTime()
+      - new Date(bozzLastExercised).getTime()) / thresholdInMilliSecs);
 
     return bozziplierDecay ** numberOfThresholdPeriods;
   }
@@ -136,7 +137,8 @@ module.exports = (robot) => {
         if (username === 'shadowcat') {
           res.send('Swings don\'t count yet.');
           return;
-        } else if (repsDone > 20) {
+        }
+        if (repsDone > 20) {
           res.send('Even :commando: can\'t do that many pullups at a go');
           return;
         }
