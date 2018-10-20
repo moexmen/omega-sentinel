@@ -42,6 +42,8 @@ module.exports = (robot) => {
     return `${totalPrice.toFixed(2)}`;
   };
 
+  const finalSummary = () => `*No more orders!* ${summaries()}\nTotal Price: $${calcPrice()}\nCall *6469 3360* to order.`;
+
   const addOrder = (waffleType, name) => {
     const nameList = robot.brain.get(waffleType);
     nameList.push(name);
@@ -89,7 +91,7 @@ module.exports = (robot) => {
     // set end action
     return setTimeout((() => {
       if (robot.brain.get('waffleTime') === date) {
-        res.send(`*No more orders!* ${summaries()}\nCall *6469 3360* to order.`);
+        res.send(finalSummary());
       }
     }), TIMEOUT);
   });
@@ -138,7 +140,7 @@ module.exports = (robot) => {
   return robot.hear(/^waffles stop$/i, (res) => {
     if (isOrderActive()) {
       robot.brain.set('waffleTime', Date.now() - TIMEOUT);
-      res.reply(`*No more orders!* ${summaries()}\nTotal Price: $${calcPrice()}\nCall *6469 3360* to order.`);
+      res.reply(finalSummary());
     }
   });
 };
