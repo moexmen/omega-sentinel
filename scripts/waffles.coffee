@@ -33,6 +33,9 @@ module.exports = (robot) ->
       totalPrice += numType * wafflePrices[waffleType]
     "#{totalPrice.toFixed 2}"
 
+  finalSummary = () ->
+    '*No more orders!* ' + summaries() + "\nTotal Price: $" + calcPrice() + "\nCall *6469 3360* to order."
+
   addOrder = (waffleType, name) ->
     nameList = robot.brain.get(waffleType)
     nameList.push(name)
@@ -76,7 +79,7 @@ module.exports = (robot) ->
     # set end action
     setTimeout (->
       if robot.brain.get('waffleTime') == date
-        msg.send '*No more orders!* ' + summaries() + "\nCall *6469 3360* to order."
+        msg.send finalSummary()
     ), TIMEOUT
 
   robot.hear new RegExp("^(#{waffleTypes.join('|')})$", 'i'), (msg) ->
@@ -114,5 +117,4 @@ module.exports = (robot) ->
   robot.hear /^waffles stop$/i, (msg) ->
     if isOrderActive()
       robot.brain.set('waffleTime', Date.now() - TIMEOUT)
-      msg.reply '*No more orders!* ' + summaries() + "\nTotal Price: $" + calcPrice() + "\nCall *6469 3360* to order."
-
+      msg.reply finalSummary()
