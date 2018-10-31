@@ -9,8 +9,10 @@
 #   cancel - when active, cancels all of your orders
 #
 
-waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'blueberry', 'cheese']
-wafflePrices = {'plain': 1.2, 'kaya': 1.5, 'butter': 1.5, 'peanut': 1.5, 'redbean': 1.5, 'blueberry': 1.8, 'cheese': 1.8, 'chocolate': 1.8}
+waffleTypesLeft = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'blueberry', 'cheese']
+waffleTypesRight = ['plain', 'margarine', 'redbean', 'kaya', 'peanut', 'blueberry', 'strawberry', 'chocolate', 'cheese', 'margarinechickenfloss', 'hamcheese']
+wafflePricesLeft = {'plain': 1.2, 'kaya': 1.5, 'butter': 1.5, 'peanut': 1.5, 'redbean': 1.5, 'blueberry': 1.8, 'cheese': 1.8, 'chocolate': 1.8}
+wafflePricesRight = {'plain': 1.2, 'margarine': 1.4, 'redbean': 1.4, 'kaya': 1.4, 'peanut': 1.6, 'blueberry': 1.6, 'strawberry': 1.6, 'chocolate': 1.6, 'cheese': 1.7, 'margarinechickenfloss': 2.0, 'hamcheese': 2.0}
 waffleReminders = [5, 3, 1] # minutes till timeout
 TIMEOUT = 15 * 60 * 1000
 
@@ -18,6 +20,12 @@ module.exports = (robot) ->
   # produces a summary of current orders
   summaries = () ->
     output = 'Orders so far:\n'
+    waffleTypes = []
+    if robot.brain.get('direction') == 'left'
+      waffleTypes = waffleTypesLeft
+    else
+      waffleTypes = waffleTypesRight
+
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
       numType = nameList.length
@@ -27,6 +35,15 @@ module.exports = (robot) ->
 
   calcPrice = () ->
     totalPrice = 0
+    waffleTypes = []
+    wafflePrices = {}
+    if robot.brain.get('direction') == 'left'
+      waffleTypes = waffleTypesLeft
+      wafflePrices = wafflePricesLeft
+    else
+      waffleTypes = waffleTypesRight
+      wafflePrices = wafflePricesRight
+
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
       numType = nameList.length
@@ -34,7 +51,12 @@ module.exports = (robot) ->
     "#{totalPrice.toFixed 2}"
 
   finalSummary = () ->
-    '*No more orders!* ' + summaries() + "\nTotal Price: $" + calcPrice() + "\nCall *6469 3360* to order."
+    orderMethod = ''
+    if robot.brain.get('direction') == 'left'
+      orderMethod = "Call *6469 3360*"
+    else
+      orderMethod = "Take a walk"
+    '*No more orders!* ' + summaries() + "\nTotal Price: $" + calcPrice() + "\n" + orderMethod + " to order."
 
   addOrder = (waffleType, name) ->
     nameList = robot.brain.get(waffleType)
@@ -42,6 +64,12 @@ module.exports = (robot) ->
     robot.brain.set(waffleType, nameList)
 
   deleteOrders = (name) ->
+    waffleTypes = []
+    if robot.brain.get('direction') == 'left'
+      waffleTypes = waffleTypesLeft
+    else
+      waffleTypes = waffleTypesRight
+
     for waffleType in waffleTypes
       nameList = robot.brain.get(waffleType)
         .filter (order_name) ->
@@ -61,15 +89,19 @@ module.exports = (robot) ->
       false
 
   # listen out for waffles? to start consolidating
-  robot.hear /waffles\?/i, (msg) ->
+  robot.hear /^waffles\?/i, (msg) ->
+    msg.send "\n*To start collecting orders*: say `waffles left?` or `waffles right?`"
+
+  robot.hear /waffles left\?/i, (msg) ->
     msg.send "@here: Consolidating waffle orders...\n" +
-      "*Available flavours*: #{waffleTypes.join(', ')}\n" +
+      "*Available flavours*: #{waffleTypesLeft.join(', ')}\n" +
       "*Need help?* say `waffles help`"
     date = Date.now()
     # start a new order by setting the current time and setting the order keys to empty arrays
     # the array will store the list of user names
     robot.brain.set 'waffleTime', date
-    robot.brain.set(waffleType, []) for waffleType in waffleTypes
+    robot.brain.set 'direction', 'left'
+    robot.brain.set(waffleType, []) for waffleType in waffleTypesLeft
     # set countdown reminders
     waffleReminders.forEach (reminder) ->
       setTimeout (->
@@ -82,14 +114,49 @@ module.exports = (robot) ->
         msg.send finalSummary()
     ), TIMEOUT
 
-  robot.hear new RegExp("^(#{waffleTypes.join('|')})$", 'i'), (msg) ->
-    if isOrderActive()
+  robot.hear new RegExp("^(#{waffleTypesLeft.join('|')})$", 'i'), (msg) ->
+    if isOrderActive() and robot.brain.get('direction') == 'left'
       waffleType = msg.match[1].toLowerCase()
       addOrder(waffleType, msg.message.user.name)
       msg.reply summaries()
 
-  robot.hear new RegExp("^(#{waffleTypes.join('|')}) for (.*)$", 'i'), (msg) ->
-    if isOrderActive()
+  robot.hear new RegExp("^(#{waffleTypesLeft.join('|')}) for (.*)$", 'i'), (msg) ->
+    if isOrderActive() and robot.brain.get('direction') == 'left'
+      waffleType = msg.match[1].toLowerCase()
+      recipientName = msg.match[2]
+      addOrder(waffleType, "#{recipientName} _via #{msg.message.user.name}_")
+      msg.reply summaries()
+
+  robot.hear /waffles right\?/i, (msg) ->
+    msg.send "@here: Consolidating waffle orders...\n" +
+      "*Available flavours*: #{waffleTypesRight.join(', ')}\n" +
+      "*Need help?* say `waffles help`"
+    date = Date.now()
+    # start a new order by setting the current time and setting the order keys to empty arrays
+    # the array will store the list of user names
+    robot.brain.set 'waffleTime', date
+    robot.brain.set 'direction', 'right'
+    robot.brain.set(waffleType, []) for waffleType in waffleTypesRight
+    # set countdown reminders
+    waffleReminders.forEach (reminder) ->
+      setTimeout (->
+        if isOrderActive() and robot.brain.get('waffleTime') == date
+          msg.send "Waffle orders will stop in #{reminder} min!"
+      ), (TIMEOUT - reminder * 60 * 1000)
+    # set end action
+    setTimeout (->
+      if robot.brain.get('waffleTime') == date
+        msg.send finalSummary()
+    ), TIMEOUT
+
+  robot.hear new RegExp("^(#{waffleTypesRight.join('|')})$", 'i'), (msg) ->
+    if isOrderActive() and robot.brain.get('direction') == 'right'
+      waffleType = msg.match[1].toLowerCase()
+      addOrder(waffleType, msg.message.user.name)
+      msg.reply summaries()
+
+  robot.hear new RegExp("^(#{waffleTypesRight.join('|')}) for (.*)$", 'i'), (msg) ->
+    if isOrderActive() and robot.brain.get('direction') == 'right'
       waffleType = msg.match[1].toLowerCase()
       recipientName = msg.match[2]
       addOrder(waffleType, "#{recipientName} _via #{msg.message.user.name}_")
