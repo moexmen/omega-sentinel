@@ -1,12 +1,12 @@
 // Description:
 //   Tracks bozzcoins earned through exercise
 //
-// Commands: Hubot must be specifically @-mentioned.
-//   bozzcoins? - reports how many bozzcoins are in the account.
-//   did x (pullups|pushups|situps|squats|lunges|sport steps|gym reps)
+// Commands:
+//   hubot bozzcoins? - reports how many bozzcoins are in the account.
+//   hubot did x (pullups|pushups|situps|squats|lunges|sport steps|gym reps)
 //      - adds bozzcoins to the account depending on the exercise type.
-//   ran x km - adds 100 bozzcoins per km.
-//   (prata|starbucks|macs) day - subtracts bozzcoins depending on the cheat type.
+//   hubot ran x km - adds 100 bozzcoins per km.
+//   hubot (prata|starbucks|macs) day - subtracts bozzcoins depending on the cheat type.
 
 module.exports = (robot) => {
   // number of days bozz can go without exercising
