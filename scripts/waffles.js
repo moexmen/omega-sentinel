@@ -72,6 +72,10 @@ module.exports = (robot) => {
 
   // listen out for waffles? to start consolidating
   robot.hear(/waffles\?/i, (res) => {
+    if (isOrderActive()) {
+      res.reply('Already consolidating waffle orders!');
+      return;
+    }
     res.send('@here: Consolidating waffle orders...\n'
       + `*Available flavours*: ${waffleTypes.join(', ')}\n`
       + '*Need help?* say `waffles help`');
