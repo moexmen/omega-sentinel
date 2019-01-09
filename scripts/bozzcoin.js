@@ -1,12 +1,12 @@
 // Description:
 //   Tracks bozzcoins earned through exercise
 //
-// Commands: Hubot must be specifically @-mentioned.
-//   bozzcoins? - reports how many bozzcoins are in the account.
-//   did x (pullups|pushups|situps|squats|lunges|sport steps|gym reps)
+// Commands:
+//   hubot bozzcoins? - reports how many bozzcoins are in the account.
+//   hubot did x (pullups|pushups|situps|squats|lunges|sport steps|gym reps)
 //      - adds bozzcoins to the account depending on the exercise type.
-//   ran x km - adds 100 bozzcoins per km.
-//   (prata|starbucks|macs) day - subtracts bozzcoins depending on the cheat type.
+//   hubot ran x km - adds 100 bozzcoins per km.
+//   hubot (prata|starbucks|macs) day - subtracts bozzcoins depending on the cheat type.
 
 module.exports = (robot) => {
   // number of days bozz can go without exercising
@@ -31,7 +31,8 @@ module.exports = (robot) => {
   }
 
   function pictureURL(bozzcoinBalance) {
-    const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell), prataDayCost / bozzcoinsPerPictureCell);
+    const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell),
+      prataDayCost / bozzcoinsPerPictureCell);
     return `https://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
   }
 
@@ -71,8 +72,8 @@ module.exports = (robot) => {
   function calculateBozziplier() {
     const thresholdInMilliSecs = bozziplierThreshold * 86400000;
     const bozzLastExercised = robot.brain.get('bozzLastExercised');
-    const numberOfThresholdPeriods = Math.floor((new Date().getTime() -
-      new Date(bozzLastExercised).getTime()) / thresholdInMilliSecs);
+    const numberOfThresholdPeriods = Math.floor((new Date().getTime()
+      - new Date(bozzLastExercised).getTime()) / thresholdInMilliSecs);
 
     return bozziplierDecay ** numberOfThresholdPeriods;
   }
@@ -136,7 +137,8 @@ module.exports = (robot) => {
         if (username === 'shadowcat') {
           res.send('Swings don\'t count yet.');
           return;
-        } else if (repsDone > 20) {
+        }
+        if (repsDone > 20) {
           res.send('Even :commando: can\'t do that many pullups at a go');
           return;
         }

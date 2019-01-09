@@ -4,10 +4,7 @@
   "hubot-google-images",
   "hubot-google-translate",
   "hubot-help",
-  "hubot-pugme",
   "hubot-redis-brain",
-  "hubot-rules",
-  "hubot-shipit",
   "hubot-standup-alarm",
   "hubot-xkcd"
 ]
