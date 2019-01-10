@@ -42,7 +42,8 @@ module.exports = (robot) => {
     return `${totalPrice.toFixed(2)}`;
   };
 
-  const finalSummary = () => `*No more orders!* ${summaries()}\nTotal Price: $${calcPrice()}\nCall *6469 3360* to order.`;
+  const finalSummary = () => `*No more orders!* ${summaries()}\n`
+    + `Total Price: $${calcPrice()}\nCall *6469 3360* to order.`;
 
   const addOrder = (waffleType, name) => {
     const nameList = robot.brain.get(waffleType);
@@ -72,6 +73,11 @@ module.exports = (robot) => {
 
   // listen out for waffles? to start consolidating
   robot.hear(/waffles\?/i, (res) => {
+    if (isOrderActive()) {
+      res.reply('Already consolidating waffle orders!');
+      return 0;
+    }
+    
     res.send('@here: Consolidating waffle orders...\n'
       + `*Available flavours*: ${waffleTypes.join(', ')}\n`
       + '*Need help?* say `waffles help`');
