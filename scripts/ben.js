@@ -41,6 +41,7 @@ const quotes = [
   'Very simple, except it’s not so simple.',
   'The problem is that we have a problem.',
   'I am able to squeeze lemons out of lemonade.',
+  'When have I promised that I can do something and end up cannot do?',
 ];
 
 module.exports = robot => robot.hear(/ben\b/i, (res) => {

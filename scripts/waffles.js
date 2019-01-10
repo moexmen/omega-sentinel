@@ -77,6 +77,7 @@ module.exports = (robot) => {
       res.reply('Already consolidating waffle orders!');
       return 0;
     }
+    
     res.send('@here: Consolidating waffle orders...\n'
       + `*Available flavours*: ${waffleTypes.join(', ')}\n`
       + '*Need help?* say `waffles help`');
