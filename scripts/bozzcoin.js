@@ -31,8 +31,10 @@ module.exports = (robot) => {
   }
 
   function pictureURL(bozzcoinBalance) {
-    const pictureNumber = Math.min(Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell),
-      prataDayCost / bozzcoinsPerPictureCell);
+    const pictureNumber = Math.min(
+      Math.floor(bozzcoinBalance / bozzcoinsPerPictureCell),
+      prataDayCost / bozzcoinsPerPictureCell,
+    );
     return `https://bozzbojio.me/prata-progress/prata-bozz-${pictureNumber}.jpg`;
   }
 
