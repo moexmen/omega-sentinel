@@ -43,6 +43,7 @@ const quotes = [
   'I am able to squeeze lemons out of lemonade.',
   'When have I promised that I can do something and end up cannot do?',
   'Sleep is optional',
+  'I just imagine what I want, the system will evolve to suit my requirements.',
 ];
 
 module.exports = robot => robot.hear(/ben\b/i, (res) => {
