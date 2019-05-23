@@ -13,9 +13,9 @@
 //
 
 module.exports = (robot) => {
-  const waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'blueberry', 'cheese'];
+  const waffleTypes = ['plain', 'kaya', 'butter', 'peanut', 'redbean', 'blueberry', 'cheese', 'blueberryCheese'];
   const wafflePrices = {
-    plain: 1.2, kaya: 1.5, butter: 1.5, peanut: 1.5, redbean: 1.5, blueberry: 1.8, cheese: 1.8, chocolate: 1.8,
+    plain: 1.2, kaya: 1.5, butter: 1.5, peanut: 1.5, redbean: 1.5, blueberry: 1.8, cheese: 1.8, chocolate: 1.8, blueberryCheese: 2.4
   };
   const waffleReminders = [5, 3, 1]; // minutes till timeout
   const TIMEOUT = 15 * 60 * 1000;
