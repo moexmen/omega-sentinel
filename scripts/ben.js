@@ -44,6 +44,7 @@ const quotes = [
   'When have I promised that I can do something and end up cannot do?',
   'Sleep is optional',
   'I just imagine what I want, the system will evolve to suit my requirements.',
+  'We deliver everything on time on target without anyone needing to work overtime',
 ];
 
 module.exports = robot => robot.hear(/ben\b/i, (res) => {
